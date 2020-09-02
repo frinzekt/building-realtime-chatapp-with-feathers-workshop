@@ -13,8 +13,17 @@
 		<link rel="stylesheet" href="//unpkg.com/feathers-chat@4.0.0/public/chat.css" />
 	</head>
 	<body>
-		<!-- TODO: Write code here -->
-
+		<!-- MAIN INTERFACE -->
+		<main id="main" class="container">
+			<div id="chat">
+				<h1>Welcome to Feathers Chat App</h1>
+				<form class="form" onsubmit="sendMessage(event.preventDefault())">
+					<input type="text" placeholder="Enter a Message" id="message-text" />
+					<button type="submit" class="button button-primary">Send a message</button>
+				</form>
+			</div>
+			<div id="message-list"></div>
+		</main>
 		<script>
 			// Write your javascript code here
 		</script>
