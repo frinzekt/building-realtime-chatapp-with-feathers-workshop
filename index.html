@@ -25,7 +25,30 @@
 			<div id="message-list"></div>
 		</main>
 		<script>
-			// Write your javascript code here
+			// INITIALIZE FEATHERS FRONTEND WRAPPER WITH CONNECTION OF SOCKETS
+			const socket = io();
+			const app = feathers();
+			app.configure(feathers.socketio(socket));
+
+			async function sendMessage() {
+				const messageInput = document.getElementById('message-text');
+				await app.service('messages').create({ text: messageInput.value }); // ADDING MESSAGES OVER SOCKET CONNECTION
+				messageInput.value = ' ';
+			}
+
+			function addMessage(message) {
+				document.getElementById('message-list').innerHTML += '<p>' + message.text + '</p>';
+			}
+
+			async function main() {
+				// ON INITIAL LOAD, LOAD ALL THE MESSAGE
+				const messages = await app.service('messages').find();
+				messages.forEach(addMessage);
+
+				// SERVICE EVENTS PICKED UP VIA SOCKETS
+				app.service('messages').on('created', addMessage);
+			}
+			main();
 		</script>
 	</body>
 </html>
