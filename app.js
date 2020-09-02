@@ -38,6 +38,16 @@ app.configure(socketio()); // EXPOSING FEATHERS OVER SOCKET
 // SERVICE ROUTE WILL HAVE "/", but can be referenced as normal "messages" without "/"
 app.use('/messages', new MessageService());
 
+// SOCKET CHANNEL FOR EVERYONE
+//  SOCKET CHANNELS ARE DEDICATED PLACE FOR TRANSFERING
+app.on('connection', (connection) => {
+	app.channel('everybody').join(connection);
+});
+
+// ANYTIME A MESSAGE/EVENT HAPPENED, EVERYBODY IN THE CHANNEL WILL HEAR IT
+// APP.PUBLISH WILL REGISTER A SPECIFIC CHANNEL THAT SHOULD RECEIVE THE MESSAGE
+app.publish(() => app.channel('everybody'));
+
 // PREVENTS THE SCRIPT FROM EXITTING BY LETTING IT LISTEN ON A SPECIFIC PORT
 // RUNNING A NODE APPLICATION REQUIRES TYPING THE COMMAND "node app.js" LIKE PYTHON "python main.py"
 app.listen(3030).on('listening', () => {
